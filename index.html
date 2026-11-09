@@ -1,29 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-  <title>Inteligencia de Negocios con IA</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 80px 20px;
-    }
-    h1 { color: #38bdf8; }
-    p { font-size: 18px; }
-  </style>
-</head>
-<body>
-  <h1>Inteligencia de Negocios con IA</h1>
-  <h2>Proyecto DatosBike</h2>
-  <p>Mi primera aplicación web
-     publicada con GitHub Pages.</p>
-  <p>Próximamente: dashboards de
-     Inteligencia Comercial y Rentabilidad.</p>
-</body>
-</html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DatosBike | Inteligencia Comercial V1</title><link rel="stylesheet" href="style.css"><script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script defer src="app.js"></script></head><body>
+<header class="hero"><div class="brand"><span class="bike">🚲</span><strong>Datos<span>Bike</span></strong><div class="brandline"></div><div><h1>Inteligencia Comercial</h1><p>Ventas, productos y mercados · Laboratorio de IA</p></div></div><span class="version">VERSIÓN 1 · 2026</span></header>
+<main><section class="filters"><label>Año<select id="year"></select></label><label>País<select id="country"></select></label><label>Categoría<select id="category"></select></label><label>Producto<select id="product"></select></label><button id="reset">↺ Limpiar filtros</button></section>
+<section class="kpis"><article class="kpi primary"><span>VENTAS</span><strong id="sales">—</strong><small>USD · selección actual</small></article><article class="kpi"><span>COSTO DE VENTAS</span><strong id="cost">—</strong><small>USD · selección actual</small></article><article class="kpi"><span>UTILIDAD BRUTA</span><strong id="profit">—</strong><small>Ventas menos costo</small></article><article class="kpi"><span>MARGEN BRUTO</span><strong id="margin">—</strong><small>Utilidad / Ventas</small></article></section>
+<section class="charts"><article class="panel"><h2>Evolución anual de ventas</h2><p>Ventas USD · información sobre herramientas: variación USD y % interanual</p><div class="canvas"><canvas id="annual"></canvas></div></article><article class="panel"><h2>Ventas por producto</h2><p>Top 6 · productos con mayores ventas</p><div class="canvas"><canvas id="products"></canvas></div></article><article class="panel"><h2>Ventas mensuales</h2><p>Distribución de ventas por mes · USD</p><div class="canvas"><canvas id="monthly"></canvas></div></article><article class="panel"><h2>Participación de ventas por país</h2><p>Porcentaje del total de la selección</p><div class="canvas"><canvas id="countries"></canvas></div></article></section>
+<footer><span id="status">Cargando datos…</span><span id="source"></span><span>Datos académicos ficticios · V1 · GitHub Pages</span></footer></main></body></html>
