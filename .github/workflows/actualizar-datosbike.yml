@@ -1,0 +1,42 @@
+
+name: Probar conexion OneDrive DatosBike
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probar-descarga:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar Excel de OneDrive
+        env:
+          ONEDRIVE_URL: https://1drv.ms/x/c/143c0709754a4f31/IQA9S_sOIKG3RoTImMUvnHx_AfqsuePt9Qp0CRliqdxHv7A?e=KFuRgt
+        run: |
+          curl -fLsS \
+            --retry 3 \
+            --max-time 120 \
+            -A "Mozilla/5.0" \
+            "$ONEDRIVE_URL" \
+            -o datosbike-descarga
+
+          echo "Tamano descargado:"
+          wc -c datosbike-descarga
+
+          echo "Tipo de archivo:"
+          file datosbike-descarga
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("datosbike-descarga")
+          signature = p.read_bytes()[:4]
+          if signature != b"PK\x03\x04":
+              raise SystemExit(
+                  "No se obtuvo un archivo XLSX valido. "
+                  "Es posible que OneDrive devolviera HTML."
+              )
+          print("La descarga tiene firma ZIP/XLSX.")
+          PY
