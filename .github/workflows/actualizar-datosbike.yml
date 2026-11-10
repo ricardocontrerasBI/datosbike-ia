@@ -14,10 +14,15 @@ jobs:
     steps:
       - name: Descargar Excel de OneDrive
         env:
-          ONEDRIVE_URL: https://1drv.ms/x/c/143c0709754a4f31/IQA9S_sOIKG3RoTImMUvnHx_AfqsuePt9Qp0CRliqdxHv7A?e=KFuRgt
+          ONEDRIVE_URL: "https://1drv.ms/x/c/143c0709754a4f31/IQDSFwhkU7J1QrM_ylaHg4d6ATX0jRFfdGMDFm8gt49m1IM?e=Cqyp9I"
+
         run: |
+          echo "Iniciando descarga de DatosBike..."
+
           curl -fLsS \
             --retry 3 \
+            --retry-delay 5 \
+            --connect-timeout 30 \
             --max-time 120 \
             -A "Mozilla/5.0" \
             "$ONEDRIVE_URL" \
@@ -29,14 +34,34 @@ jobs:
           echo "Tipo de archivo:"
           file datosbike-descarga
 
+          echo "Validando archivo Excel..."
+
           python3 - <<'PY'
           from pathlib import Path
-          p = Path("datosbike-descarga")
-          signature = p.read_bytes()[:4]
-          if signature != b"PK\x03\x04":
+          from zipfile import ZipFile, BadZipFile
+
+          archivo = Path("datosbike-descarga")
+
+          if not archivo.exists():
+              raise SystemExit("ERROR: No se descargo el archivo.")
+
+          if archivo.stat().st_size == 0:
+              raise SystemExit("ERROR: Archivo vacio.")
+
+          try:
+              with ZipFile(archivo) as z:
+                  nombres = set(z.namelist())
+
+                  if "[Content_Types].xml" not in nombres:
+                      raise ValueError("No es un XLSX valido.")
+
+                  if "xl/workbook.xml" not in nombres:
+                      raise ValueError("No contiene un libro Excel.")
+
+          except (BadZipFile, ValueError) as e:
               raise SystemExit(
-                  "No se obtuvo un archivo XLSX valido. "
-                  "Es posible que OneDrive devolviera HTML."
+                  f"ERROR: OneDrive no entrego un XLSX valido: {e}"
               )
-          print("La descarga tiene firma ZIP/XLSX.")
+
+          print("EXITO: Archivo Excel descargado y validado.")
           PY
